@@ -1,0 +1,21 @@
+steps:
+  - label: "build, test, and publish"
+    plugins:
+      - docker#v5.7.0:
+          platform: linux/arm64/v8
+          image: "ghcr.io/seankhliao/go:tip-arm64"
+          environment:
+            - GOFLAGS=-trimpath '-ldflags=-s -w' -buildvcs=false
+            - CGO_ENABLED=0
+            - GGCR_EXPERIMENT_ESTARGZ=1
+            - KO_DOCKER_REPO=ghcr.io/seankhliao
+          volumes:
+            - /root/.docker:/root/.docker:ro
+          entrypoint: /bin/sh
+          command:
+            - -c
+            - >-
+              set -ex;
+              go test -vet=all ./... &&
+              staticcheck ./... &&
+              ko build --platform linux/amd64,linux/arm64 --bare --image-refs .images.txt --image-label org.opencontainers.image.source=https://github.com/seankhliao/$BUILDKITE_PIPELINE_SLUG,org.opencontainers.image.license=MIT
