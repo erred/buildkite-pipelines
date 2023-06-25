@@ -1,0 +1,11 @@
+steps:
+  - label: "render, and upload"
+    plugins:
+      - docker#v5.7.0:
+          platform: linux/arm64/v8
+          image: "ghcr.io/seankhliao/blogengine:latest"
+          environment:
+            - GOOGLE_APPLICATION_CREDENTIALS=/var/run/secrets/gcp/serviceaccount.json
+          expand-volume-vars: true
+          volumes:
+            - '$$HOME/.ssh/gcp/blogengine.json:/var/run/secrets/gcp/serviceaccount.json:ro'
