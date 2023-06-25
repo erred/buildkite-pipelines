@@ -8,4 +8,4 @@ steps:
             - GOOGLE_APPLICATION_CREDENTIALS=/var/run/secrets/gcp/serviceaccount.json
           expand-volume-vars: true
           volumes:
-            - '$$HOME/.ssh/gcp/blogengine.json:/var/run/secrets/gcp/serviceaccount.json:ro'
+            - "$$HOME/.ssh/gcp/blogengine.json:/var/run/secrets/gcp/serviceaccount.json:ro"
